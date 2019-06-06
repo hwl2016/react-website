@@ -1,0 +1,5 @@
+const http = require('http');
+const server = require('../src/scripts/server');
+const port = process.env.PORT || '3001';
+console.log(`server start... port: ${port}`)
+http.createServer(server).listen(port);
