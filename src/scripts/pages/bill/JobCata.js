@@ -2,6 +2,7 @@ import React from 'react'
 import { jobsCata as jobs } from './jobs'
 // const jobs = getJobsCatalog();
 // console.log(JSON.stringify(jobs))
+import '$style/bill.scss'
 
 export default class JobCata extends React.Component {
     constructor(props) {
@@ -18,6 +19,8 @@ export default class JobCata extends React.Component {
         let secidx = this.state.secondStatus.toString().slice(1,3);
         return (
             <div>
+                <div className="bill-go-home"><a href="/">返回首页</a></div>
+                <div>
                 <select placeholder="一级" onChange={(e) => {this.firstChange(e)}}>
                 <option value ="0">请选择</option>
                 {
@@ -28,6 +31,8 @@ export default class JobCata extends React.Component {
                     })
                 }
                 </select>
+                </div>
+                <div>
                 <select placeholder="二级" onChange={(e) => {this.secondChange(e)}} 
                         disabled={this.state.firstStatus == 0}>
                 <option value ="0">请选择</option>
@@ -42,6 +47,8 @@ export default class JobCata extends React.Component {
                     }) : null
                 }
                 </select>
+                </div>
+                <div>
                 <select placeholder="三级" onChange={(e) => {this.thirdChange(e)}} 
                         disabled={this.state.secondStatus == 0}>
                 <option value ="0">请选择</option>
@@ -58,6 +65,7 @@ export default class JobCata extends React.Component {
                     }) : null
                 }
                 </select>
+                </div>
             </div>
         )
     }

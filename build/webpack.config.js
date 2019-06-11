@@ -4,6 +4,7 @@ const ExtTextPlugin = require('extract-text-webpack-plugin');
 const NODE_ENV = process.env.NODE_ENV;
 const IS_PRD = 'production' === NODE_ENV;
 const WebpackEventHooks = require('./plugins/webpackEventHooks')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = [
     // {
@@ -20,6 +21,18 @@ module.exports = [
             path: path.resolve(__dirname, `../public`), 
             filename: IS_PRD ? "[name]@[hash].js" : "[name]@null.js",
             libraryTarget: "umd"
+        },
+        resolve: {
+            alias: {
+                '$class': path.resolve(__dirname, '../src/scripts/$class'),
+                '$coms': path.resolve(__dirname, '../src/scripts/$coms'),
+                '$pages': path.resolve(__dirname, '../src/scripts/pages'),
+                '$router': path.resolve(__dirname, '../src/scripts/router'),
+                '$utils': path.resolve(__dirname, '../src/scripts/utils'),
+                '$container': path.resolve(__dirname, '../src/scripts/container'),
+                '$apis': path.resolve(__dirname, '../src/scripts/apis'),
+                '$style': path.resolve(__dirname, '../src/style')
+            }
         },
         module: {
             rules: [
@@ -38,7 +51,21 @@ module.exports = [
                 },
                 {
                     test: /\.(sass|scss)$/,
-                    loader: ExtTextPlugin.extract('happypack/loader?id=css')
+                    // loader: ExtTextPlugin.extract('happypack/loader?id=css')
+                    // use: ['style-loader','css-loader','sass-loader']
+                    use: ExtTextPlugin.extract({
+                        fallback: {
+                            loader: "style-loader"
+                        },
+                        use: [
+                            {
+                                loader: "css-loader"
+                            },
+                            {
+                                loader: "sass-loader"
+                            }
+                        ]
+                    })
                 },
                 {
                     test: /\.(png|jpg)$/,
@@ -52,6 +79,17 @@ module.exports = [
             ]
         },
         plugins: [
+            new ExtTextPlugin({
+                filename: IS_PRD ? "[name]@[hash].css" : "[name]@null.css"
+            }),
+            new OptimizeCssAssetsPlugin(),
+            new OptimizeCssAssetsPlugin({
+                cssProcessor: require('postcss-cssnext'), //default
+                cssProcessorOptions: {
+                    warnForDuplicates: false,
+                    browsers: ["> 0.1% in CN", "last 2 versions"]
+                }
+            }),
             new WebpackEventHooks({
                 onAfterEmit: (compilation) => {
                     let files = [];

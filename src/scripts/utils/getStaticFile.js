@@ -10,5 +10,5 @@ versionArr.forEach(item => {
 
 module.exports = function getStaticFile(file, type) {
     let ver = version[`${file}.${type}`];
-    return `/static/${file}@${ver}.${type}`
+    return ver ? `/static/${file}@${ver}.${type}` : ''
 }
