@@ -1,6 +1,7 @@
 import React from 'react'
-import { getJobsCatalog } from './jobs'
-const jobs = getJobsCatalog();
+import { jobsCata as jobs } from './jobs'
+// const jobs = getJobsCatalog();
+// console.log(JSON.stringify(jobs))
 
 export default class JobCata extends React.Component {
     constructor(props) {
