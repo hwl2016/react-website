@@ -30,6 +30,7 @@ export default class App extends React.Component {
                 <p id="btn">btn</p>
                 <p><Link to='/login'>Login</Link></p>
                 <p><Link to='/register'>Register</Link></p>
+                <p><a href='/bill'>账单</a></p>
             </div>
         )
     }
